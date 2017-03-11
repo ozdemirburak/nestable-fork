@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<title>Nestable</title>
-<link rel="stylesheet" href="../src/jquery.nestable.css">
-<link rel="stylesheet" href="style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <title>Nestable</title>
+    <link rel="stylesheet" href="../src/jquery.nestable.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -61,92 +61,98 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script src="../src/jquery.nestable.js"></script>
 <script>
-    $(function() {
-        var updateOutput = function(e, method) {
-            var list = e.length ? e : $(e.target),
-                    output = list.data('output'),
-                    value  = window.JSON ? window.JSON.stringify(list.nestable(method)) : 'JSON support is required.';
-            output.val(value);
-        };
+  $(function() {
+    var updateOutput = function(e, method) {
+      var list = e.length ? e : $(e.target),
+        output = list.data('output'),
+        value  = window.JSON ? window.JSON.stringify(list.nestable(method)) : 'JSON support is required.';
+      output.val(value);
+    };
 
-        var json = [
-            {
-                "id": 1,
-                "content": "Item 1"
-            },
-            {
-                "id": 2,
-                "content": "Item 2",
-                "children": [
-                    {
-                        "id": 3,
-                        "content": "Item 3"
-                    },
-                    {
-                        "id": 4,
-                        "content": "Item 4"
-                    },
-                    {
-                        "id": 5,
-                        "content": "Item 5",
-                        "children": [
-                            {
-                                "id": 6,
-                                "content": "Item 6"
-                            },
-                            {
-                                "id": 7,
-                                "content": "Item 7"
-                            },
-                            {
-                                "id": 8,
-                                "content": "Item 8"
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "id": 9,
-                "content": "Item 9"
-            }
-        ];
+    var output = function (source, targetSerialize, targetNestedSet) {
+      updateOutput($(source).data('output', $(targetSerialize)), 'serialize');
+      updateOutput($(source).data('output', $(targetNestedSet)), 'asNestedSet');
+    };
 
-        // activate Nestable for list 1
-        $('#nestable').nestable({
-            group: 1,
-            json: json,
-            contentCallback: function(item) {
-                var content = item.content || '' ? item.content : item.id;
-                content += ' <i>(id = ' + item.id + ')</i>';
-                return content;
-            }
-        }).on('change', updateOutput);
+    var json = [
+      {
+        "id": 1,
+        "content": "Item 1"
+      },
+      {
+        "id": 2,
+        "content": "Item 2",
+        "children": [
+          {
+            "id": 3,
+            "content": "Item 3"
+          },
+          {
+            "id": 4,
+            "content": "Item 4"
+          },
+          {
+            "id": 5,
+            "content": "Item 5",
+            "children": [
+              {
+                "id": 6,
+                "content": "Item 6"
+              },
+              {
+                "id": 7,
+                "content": "Item 7"
+              },
+              {
+                "id": 8,
+                "content": "Item 8"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "content": "Item 9"
+      }
+    ];
 
-        // activate Nestable for list 2
-        $('#nestable2').nestable({
-            group: 1
-        }).on('change', updateOutput);
-
-        // output initial serialised data
-        updateOutput($('#nestable').data('output', $('#nestable-output')), 'serialize');
-        updateOutput($('#nestable2').data('output', $('#nestable2-output')), 'serialize');
-        // asNestedSet
-        updateOutput($('#nestable').data('output', $('#nestable-output-array')), 'asNestedSet');
-        updateOutput($('#nestable2').data('output', $('#nestable2-output-array')), 'asNestedSet');
-
-        $('#nestable-menu').on('click', function(e) {
-            var target = $(e.target),
-                action = target.data('action');
-            if(action === 'expand-all') {
-                $('.dd').nestable('expandAll');
-            }
-            if(action === 'collapse-all') {
-                $('.dd').nestable('collapseAll');
-            }
-        });
-
+    // activate Nestable for list 1
+    $('#nestable').nestable({
+      group: 1,
+      json: json,
+      contentCallback: function(item) {
+        var content = item.content || '' ? item.content : item.id;
+        content += ' <i>(id = ' + item.id + ')</i>';
+        return content;
+      }
+    }).on('change', function() {
+      output('#nestable', '#nestable-output', '#nestable-output-array');
     });
+
+    // activate Nestable for list 2
+    $('#nestable2').nestable({
+      group: 1
+    }).on('change', function() {
+      output('#nestable2', '#nestable2-output', '#nestable2-output-array');
+    });
+
+    // output initial
+    output('#nestable', '#nestable-output', '#nestable-output-array');
+    output('#nestable2', '#nestable2-output', '#nestable2-output-array');
+
+    $('#nestable-menu').on('click', function(e) {
+      var target = $(e.target),
+        action = target.data('action');
+      if(action === 'expand-all') {
+        $('.dd').nestable('expandAll');
+      }
+      if(action === 'collapse-all') {
+        $('.dd').nestable('collapseAll');
+      }
+    });
+
+  });
 </script>
 </body>
 </html>
