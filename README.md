@@ -107,6 +107,10 @@ These advanced config options are also available:
 
 ## Change Log
 
+### 10th April 2017
+
+* [ozdemirburak] Make it draggable when there exists both touch and the mouse
+
 ### 20th February 2017
 
 * [ozdemirburak] Support Hash ID
