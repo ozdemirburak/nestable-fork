@@ -121,7 +121,7 @@
             });
 
             list.el.on('click', 'button', function(e) {
-                if(list.dragEl || (!hasTouch && e.button !== 0)) {
+                if(list.dragEl) {
                     return;
                 }
                 var target = $(e.currentTarget),
