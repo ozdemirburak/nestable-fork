@@ -7,7 +7,6 @@
     "Ramon Smit <@_RamonSmit>",
     "David Bushell <@dbushell>"
   ],
-  "main": "./dist",
   "description": "Drag & drop hierarchical list with mouse and touch compatibility",
   "main": ["jquery.nestable.js", "jquery.nestable.css"],
   "keywords": [
